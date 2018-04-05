@@ -24,15 +24,13 @@ public:
     void enqueue(TYPE &value);
     auto dequeue();
 
-    template <typename TYPE>
     auto peek();
 
     bool is_empty(){
-        return m_top + 1;
+        return m_size();
     };
     bool is_full(){
-        assert(m_top < MAX_SIZE && "Queue overflow has occured");
-        return m_top == MAX_SIZE - 1;
+        return m_size() == MAX_SIZE;
     };
 };
 
@@ -56,15 +54,15 @@ void Queue::enqueue(TYPE &value){
 }
 auto Queue::dequeue(){
     assert(m_size() > 0 && "Queue underflow would occur with dequeue");
-    auto tmp = *m_arr[m_front];
-    delete m_arr[m_front];
+    auto tmp = *m_arr[m_front + 1];
+    delete m_arr[m_front + 1];
     m_front++;
     return tmp;
 }
 
 auto Queue::peek(){
-    assert(m_front > - 1 && "Can't peek at an empty Queue");
-    return *m_arr[m_front];
+    assert(m_back > - 1 && "Can't peek at an empty Queue");
+    return *m_arr[m_front + 1];
 }
 
 
