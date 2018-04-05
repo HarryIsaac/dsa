@@ -17,11 +17,10 @@ public:
     Stack() : m_top(-1){};
 
     template <typename TYPE>
-    void push(TYPE *value);
+    void push(TYPE &value);
     void pop();
 
-    template <typename TYPE>
-    TYPE peek();
+    auto peek();
 
     bool is_empty(){
         return m_top + 1;
@@ -33,18 +32,20 @@ public:
 };
 
 template <typename TYPE>
-void Stack::push(TYPE *value){
+void Stack::push(TYPE &value){
     assert(m_top < MAX_SIZE - 1 && "Stack overflow would occur with push");
 
-    m_arr[m_top + 1] = value;
+    TYPE *store_value = new TYPE(value);
+    m_arr[m_top + 1] = store_value;
     m_top++;
 }
 void Stack::pop(){
     assert(m_top > - 1 && "Stack underflow would occur with pop");
+    delete m_arr[m_top];
     m_top--;
 }
-template <typename TYPE>
-TYPE Stack::peek(){
+
+auto Stack::peek(){
     assert(m_top > - 1 && "Can't peek at an empty stack");
     return *m_arr[m_top];
 }
